@@ -7,8 +7,8 @@
       <h2 class="form-title">Consulta tu pedido</h2>
 
       <div v-if="$page.props.flash?.error || lookup_error" class="alert-error">
-        {{ $page.props.flash?.error || lookup_error }}
-      </div>
+  {{ $page.props.flash?.error || lookup_error }}
+</div>
 
       <!-- Resultado -->
       <div v-if="result" class="result-box">
@@ -56,7 +56,13 @@ const props = defineProps({
   lookup_error:  String,
 })
 
-const result = computed(() => props.lookup_result ?? null)
+const result = computed(() => 
+  props.lookup_result ?? page.props.flash?.lookup_result ?? null
+)
+
+const errorMsg = computed(() =>
+  props.lookup_error ?? page.props.flash?.lookup_error ?? null
+)
 
 const form = useForm({ invoice: '', client_num: '' })
 
@@ -66,6 +72,7 @@ const submit = () => {
 
 const resetForm = () => {
   form.reset()
+  window.location.href = route('lookup')
 }
 
 const statusLabel = (s) => ({
